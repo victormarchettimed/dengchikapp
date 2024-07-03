@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import pickle
 import numpy as np
@@ -41,6 +41,11 @@ def predict():
         'dengue_probability': prediction[0][1],  # Probabilidade de Dengue (classe 1)
         'chikungunya_probability': prediction[0][0]  # Probabilidade de Chikungunya (classe 0)
     })
+
+# Rota para servir o formulário
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
