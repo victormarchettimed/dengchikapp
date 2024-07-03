@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário de Predição</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-4">Predição de Dengue e Chikungunya</h1>
+        <form id="prediction-form" class="bg-white p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="ARTHRALGIA" name="ARTHRALGIA" class="mr-2 leading-tight">
+                    <span class="text-sm">ARTHRALGIA</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="RETRO_ORBITAL_PAIN" name="RETRO_ORBITAL_PAIN" class="mr-2 leading-tight">
+                    <span class="text-sm">RETRO ORBITAL PAIN</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="NAUSEA" name="NAUSEA" class="mr-2 leading-tight">
+                    <span class="text-sm">NAUSEA</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="EXANTHEM" name="EXANTHEM" class="mr-2 leading-tight">
+                    <span class="text-sm">EXANTHEM</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="ARTHRITIS" name="ARTHRITIS" class="mr-2 leading-tight">
+                    <span class="text-sm">ARTHRITIS</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="BACK_PAIN" name="BACK_PAIN" class="mr-2 leading-tight">
+                    <span class="text-sm">BACK PAIN</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="MYALGIA" name="MYALGIA" class="mr-2 leading-tight">
+                    <span class="text-sm">MYALGIA</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="VOMITING" name="VOMITING" class="mr-2 leading-tight">
+                    <span class="text-sm">VOMITING</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="HEADACHE" name="HEADACHE" class="mr-2 leading-tight">
+                    <span class="text-sm">HEADACHE</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="FEVER" name="FEVER" class="mr-2 leading-tight">
+                    <span class="text-sm">FEVER</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="CONJUNCTIVITIS" name="CONJUNCTIVITIS" class="mr-2 leading-tight">
+                    <span class="text-sm">CONJUNCTIVITIS</span>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">
+                    <input type="checkbox" id="PETECHIA" name="PETECHIA" class="mr-2 leading-tight">
+                    <span class="text-sm">PETECHIA</span>
+                </label>
+            </div>
+            <button type="button" onclick="submitForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </form>
+        <div id="result" class="mt-4 text-lg"></div>
+    </div>
+
+    <script>
+        function submitForm() {
+            const formData = new FormData(document.getElementById('prediction-form'));
+            const data = {};
+            formData.forEach((value, key) => data[key] = value === 'on' ? 1 : 0);
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 
+                    `Probabilidade de Dengue: ${data.dengue_probability}\n` +
+                    `Probabilidade de Chikungunya: ${data.chikungunya_probability}`;
+            });
+        }
+    </script>
+</body>
+</html>
